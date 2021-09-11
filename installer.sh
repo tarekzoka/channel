@@ -26,9 +26,10 @@ echo ""
 echo "" 
 echo "" "*********************************************************" 
 echo "# Channel And INSTALLED SUCCESSFULLY #"
-echo "          UPLOADED BY EMIL_NABIL "
+echo "          UPLOADED BY tarekzoka "
 echo " "*********************************************************" 
 echo "# your Device will RESTART Now #" echo "****************************************"
 wait 2
 init 4
 init 3
+exit 0
