@@ -62,6 +62,6 @@ elif [ -f /lib/ld-2.30.so ]; then
 
 fi
 
-opkg install --force-overwrite  http://ipkinstall.ath.cx/LINUXSAT/Plugin_CAM/enigma2-plugin-softcams-mgcamd_all.ipk
+opkg install --force-overwrite  https://github.com/tarekzoka/channel/blob/main/enigma2-tarek-channel_1.2_all.ipk
 
 exit 0
