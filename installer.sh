@@ -1,13 +1,67 @@
   
 #!/bin/sh
-# ###########################################
-# SCRIPT : DOWNLOAD AND INSTALL Channel
-# ###########################################
-#
-# Command: wget https://raw.githubusercontent.com/tarekzoka/channel/main/installer.sh -qO - | /bin/sh 
-#
-opkg install --force-overwrite  https://github.com/tarekzoka/channel/raw/main/enigma2-tarek-channel_1.2_all.ipk
-wait
-sleep 2;
-exit 0
 
+######### Only These two lines to edit with new version ######
+version=26.10.2020
+##############################################################
+
+CHECK='/tmp/check'
+
+# check depends packges
+if [ -f /etc/apt/apt.conf ] ; then
+   STATUS='/var/lib/dpkg/status'
+   OS='DreamOS'
+elif [ -f /etc/opkg/opkg.conf ] ; then
+   STATUS='/var/lib/opkg/status'
+   OS='Opensource'
+fi
+
+if grep -q 'libcrypto-compat' $STATUS; then
+    libcrypto-compat='installed'
+fi
+if grep -q 'libcrypto-compat-0.9.7' $STATUS; then
+    libcrypto-compat-0.9.7='installed'
+fi
+if grep -q 'libcrypto-compat-1.0.0' $STATUS; then
+    libcrypto-compat-1.0.0='installed'
+fi
+
+if [ $libcrypto-compat = "installed" -a $libcrypto-compat-0.9.7 = "installed" -a $libcrypto-compat-1.0.0 = "installed" ]; then 
+     echo "All Depends Are Installed"
+else
+     echo "=========================================================================="
+     echo "Some Depends Need to Be downloaded From Feeds ...."
+     if [ $OS = "DreamOS" ]; then
+		echo "========================================================================"
+		echo " Downloading libcrypto-compat,libcrypto-compat-0.9.7,libcrypto-compat-1.0.0 ......"
+		apt-get install Downloading libcrypto libcrypto-compat-0.9.7 libcrypto-compat-1.0.0 -y
+     else
+		echo "========================================================================"
+		echo " Downloading libcrypto-compat ......"
+		opkg install libcrypto-compat
+		echo "========================================================================"
+		echo " Downloading libcrypto-compat-0.9.7 ......"
+		opkg install libcrypto-compat-0.9.7
+		echo "========================================================================"
+		echo " Downloading libcrypto-compat-1.0.0 ......"
+		opkg install libcrypto-compat-1.0.0
+		echo "========================================================================"
+     fi
+fi
+echo ""
+sleep 5
+
+if [ -f /lib/ld-2.28.so ]; then
+	ln -s /lib/ld-2.28.so /lib/ld-linux.so.3
+elif [ -f /lib/ld-2.26.so ]; then
+	ln -s /lib/ld-2.26.so /lib/ld-linux.so.3
+elif [ -f /lib/ld-2.25.so ]; then
+	ln -s /lib/ld-2.25.so /lib/ld-linux.so.3
+elif [ -f /lib/ld-2.30.so ]; then
+	ln -s /lib/ld-2.30.so /lib/ld-linux.so.3
+
+fi
+
+opkg install --force-overwrite  http://ipkinstall.ath.cx/LINUXSAT/Plugin_CAM/enigma2-plugin-softcams-mgcamd_all.ipk
+
+exit 0
